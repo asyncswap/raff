@@ -30,7 +30,9 @@ jobs:
 
       - name: Run hnc-up
         run: |
-          hnc-up
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          $HOME/.local/bin/hnc-up
+          $HOME/.local/bin/hnc --version
 
       - name: Show Neo Huff version
         run: |
