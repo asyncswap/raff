@@ -17,21 +17,50 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Cache Foundry
+        uses: actions/cache@v4
+        with:
+          path: ~/.foundry
+          key: ${{ runner.os }}-foundry-stable
+          restore-keys: |
+            ${{ runner.os }}-foundry-
+
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
 
       - name: Show Forge version
         run: |
           forge --version
 
-      - name: Install Neo Huff
-        run: |
-          curl -L https://raw.githubusercontent.com/cakevm/huff-neo/main/hnc-up/install | bash
+      - name: Cache Neo Huff (hnc)
+        uses: actions/cache@v4
+        with:
+          path: ~/.huff-neo
+          key: ${{ runner.os }}-hnc-v1
+          restore-keys: |
+            ${{ runner.os }}-hnc-
 
+      - name: Install Neo Huff (hnc-up + hnc)
+        run: |
+          set -euxo pipefail
+          if [ ! -f "$HOME/.huff-neo/bin/hnc" ]; then
+            echo "Installing hnc-up..."
+            curl -L https://raw.githubusercontent.com/cakevm/huff-neo/main/hnc-up/install | bash
+          "$HOME/.huff-neo/bin/hnc-up"
+          else
+            echo "hnc already installed, skipping download."
+          fi
+
+          echo "$HOME/.huff-neo/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.huff-neo/bin:$PATH"
+
+          hnc --version
       - name: Install hnc via hnc-up
         run: |
-          $HOME/.huff-neo/bin/hnc-up
-          $HOME/.huff-neo/bin/hnc --version
+          hnc-up
+          hnc --version
 
       - name: Run Forge fmt
         run: |
