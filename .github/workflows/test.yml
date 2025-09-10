@@ -27,9 +27,6 @@ jobs:
       - name: Install Neo Huff
         run: |
           curl -L https://raw.githubusercontent.com/cakevm/huff-neo/main/hnc-up/install | bash
-
-      - name: Run hnc-up
-        run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           $HOME/.local/bin/hnc-up
           $HOME/.local/bin/hnc --version
