@@ -10,11 +10,11 @@
 //....::..::::..:::::..:::::........::..:::::..::..::::::::..:::::..:::......:::........::
 //
 #define constant ALGORITHM = __FUNC_SIG("ALGORITHM()") // "7cd88050"
-#define constant asyncOrder	= __FUNC_SIG("asyncOrder(bytes32,address,bool)") // "b9586732"
+#define constant asyncOrder = __FUNC_SIG("asyncOrder(bytes32,address,bool)") // "b9586732"
 #define constant asyncOrders = __FUNC_SIG("asyncOrders(bytes32)") // "43719eae"
 #define constant calculateHookFee = __FUNC_SIG("calculateHookFee(uint256)") // "aa223bd0"
 #define constant calculatePoolFee = __FUNC_SIG("calculatePoolFee(uint24,uint256)") // "d6a522ca"
-#define constant executeOrder	= __FUNC_SIG("executeOrder(((address,address,uint24,int24,address),address,bool,uint256,uint160),bytes)") // "caf6c3b1"
+#define constant executeOrder = __FUNC_SIG("executeOrder(((address,address,uint24,int24,address),address,bool,uint256,uint160),bytes)") // "caf6c3b1"
 #define constant executeOrders = __FUNC_SIG("executeOrders(((address,address,uint24,int24,address),address,bool,uint256,uint160)[],bytes)") // "fb249c0a"
 #define constant getHookPermissions = __FUNC_SIG("getHookPermissions()") // "c4e833ce"
 #define constant isExecutor = __FUNC_SIG("isExecutor(bytes32,address,address)") // "6ca34978"
