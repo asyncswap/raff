@@ -27,13 +27,11 @@ jobs:
       - name: Install Neo Huff
         run: |
           curl -L https://raw.githubusercontent.com/cakevm/huff-neo/main/hnc-up/install | bash
-          echo "$HOME/.huff-neo/bin" >> $GITHUB_PATH
 
       - name: Install hnc via hnc-up
         run: |
-          echo "$HOME/.huff-neo/bin" >> $GITHUB_PATH
-          hnc-up
-          hnc --version
+          $HOME/.huff-neo/bin/hnc-up
+          $HOME/.huff-neo/bin/hnc --version
 
       - name: Run Forge fmt
         run: |
@@ -42,6 +40,5 @@ jobs:
 
       - name: Run Forge tests
         run: |
-          echo "$HOME/.huff-neo/bin" >> $GITHUB_PATH
           forge test -vvv
         id: test
