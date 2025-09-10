@@ -27,12 +27,11 @@ jobs:
       - name: Install Neo Huff
         run: |
           curl -L https://raw.githubusercontent.com/cakevm/huff-neo/main/hnc-up/install | bash
-          source /home/runner/.bashrc
-          hnc-up
-          hnc --version
+          echo "$HOME/.huff-neo/bin" >> $GITHUB_PATH
 
-      - name: Show Neo Huff version
+      - name: Install hnc via hnc-up
         run: |
+          hnc-up
           hnc --version
 
       - name: Run Forge fmt
