@@ -20,7 +20,7 @@ jobs:
       - name: Cache Foundry
         uses: actions/cache@v4
         with:
-          path: ~/.foundry
+          path: ~/.foundry/bin
           key: ${{ runner.os }}-foundry-stable
           restore-keys: |
             ${{ runner.os }}-foundry-
@@ -34,25 +34,17 @@ jobs:
         run: |
           forge --version
 
-      - name: Cache Neo Huff (hnc)
+      - name: Cache Neo Huff
         uses: actions/cache@v4
         with:
-          path: ~/.huff-neo
+          path: ~/.huff-neo/bin
           key: ${{ runner.os }}-hnc-v1
           restore-keys: |
             ${{ runner.os }}-hnc-
 
       - name: Install Neo Huff (hnc-up + hnc)
         run: |
-          set -euxo pipefail
-          if [ ! -f "$HOME/.huff-neo/bin/hnc" ]; then
-            echo "Installing hnc-up..."
-            curl -L https://raw.githubusercontent.com/cakevm/huff-neo/main/hnc-up/install | bash
-          "$HOME/.huff-neo/bin/hnc-up"
-          else
-            echo "hnc already installed, skipping download."
-          fi
-
+          curl -L https://raw.githubusercontent.com/cakevm/huff-neo/main/hnc-up/install | bash
           echo "$HOME/.huff-neo/bin" >> $GITHUB_PATH
           export PATH="$HOME/.huff-neo/bin:$PATH"
 
