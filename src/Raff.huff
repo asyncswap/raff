@@ -296,41 +296,50 @@
 // hnc src/AsyncSwap.huff test --sender 0x0000000000000000000000000000000000000000 \
 // --debug -m TEST_BEFORE_SWAP
 // 
-#[calldata("0xdc98354e")]
+// The test runner calls each test as `caller`, so the pool manager slot is set to that caller.
+#[calldata(0xdc98354e), caller(0xbeef), store([POOL_MANAGER_LOC], 0xbeef)]
+#[expect_return(0xdc98354e00000000000000000000000000000000000000000000000000000000)]
 #define test TEST_BEFORE_INITIALIZE() = {
-	beforeInitialize()
-}
-
-#[calldata("0x575e24b4")]
-#define test TEST_BEFORE_SWAP() = {
-	beforeSwap()
-}
-
-#[calldata("0x259982e5")]
-#define test TEST_BEFORE_ADD_LIQUIDITY() = {
-	beforeAddLiquidity()
-}
-
-#[calldata("0xc4e833ce")]
-#define test TEST_GET_HOOK_PERMISSIONS() = {
-	getHookPermissions()
-}
-
-#[calldata("0xdc4c90d3")]
-#define test TEST_POOL_MANAGER() = {
-	poolManager()
-}
-
-#[calldata("0x575e24b4")]
-#define test TEST_SWAP_WHEN_PAUSED() = {
-	// fails when paused
-	0x00 [CONTRACT_PAUSED_LOC] sstore
 	MAIN()
 }
 
-#[calldata("0x259982e5")]
+#[calldata(0x575e24b4), caller(0xbeef), store([POOL_MANAGER_LOC], 0xbeef)]
+#[expect_return(0x575e24b400000000000000000000000000000000000000000000000000000000)]
+#define test TEST_BEFORE_SWAP() = {
+	MAIN()
+}
+
+#[calldata(0x259982e5), caller(0xbeef), store([POOL_MANAGER_LOC], 0xbeef)]
+#[expect_return(0x259982e500000000000000000000000000000000000000000000000000000000)]
+#define test TEST_BEFORE_ADD_LIQUIDITY() = {
+	MAIN()
+}
+
+#[calldata(0x575e24b4), caller(0xdead), store([POOL_MANAGER_LOC], 0xbeef)]
+#[expect_partial_revert(__ERROR(Error))]
+#define test TEST_BEFORE_SWAP_NOT_POOL_MANAGER() = {
+	MAIN()
+}
+
+#[calldata(0xc4e833ce)]
+#define test TEST_GET_HOOK_PERMISSIONS() = {
+	MAIN()
+}
+
+#[calldata(0xdc4c90d3), store([POOL_MANAGER_LOC], 0xbeef)]
+#[expect_return(48879)]
+#define test TEST_POOL_MANAGER() = {
+	MAIN()
+}
+
+#[calldata(0x575e24b4), caller(0xbeef), store([POOL_MANAGER_LOC], 0xbeef), store([CONTRACT_PAUSED_LOC], 0x01)]
+#[expect_revert]
+#define test TEST_SWAP_WHEN_PAUSED() = {
+	MAIN()
+}
+
+#[calldata(0x259982e5), caller(0xbeef), store([POOL_MANAGER_LOC], 0xbeef), store([CONTRACT_PAUSED_LOC], 0x01)]
+#[expect_revert]
 #define test TEST_ADD_LIQ_WHEN_PAUSED() = {
-	// fails when paused
-	0x00 [CONTRACT_PAUSED_LOC] sstore
 	MAIN()
 }
